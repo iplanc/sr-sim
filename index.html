@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>星穹铁道战斗模拟器</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <script src="./main.js"></script>
+    <script>
+        var statement = {
+            friendly: [
+                {
+                    aviliable: true,
+                    friendly: true,
+                    name: "卡夫卡",
+                    nature: "thu",
+                    roundEnd: false,
+                    status: {
+                        hp: 100,
+                        atk: 100,
+                        def: 100,
+                        spd: 120,
+                        wek: []
+                    },
+                    skill: []
+                },
+                {
+                    aviliable: true,
+                    friendly: true,
+                    name: "银狼",
+                    nature: "qua",
+                    roundEnd: false,
+                    status: {
+                        hp: 100,
+                        atk: 100,
+                        def: 100,
+                        spd: 130,
+                        wek: []
+                    },
+                    skill: []
+                },
+                {
+                    aviliable: true,
+                    friendly: true,
+                    name: "希露瓦",
+                    nature: "thu",
+                    roundEnd: false,
+                    status: {
+                        hp: 100,
+                        atk: 100,
+                        def: 100,
+                        spd: 90,
+                        wek: []
+                    },
+                    skill: []
+                },
+                {
+                    aviliable: true,
+                    friendly: true,
+                    name: "霍霍",
+                    nature: "wnd",
+                    roundEnd: false,
+                    status: {
+                        hp: 100,
+                        atk: 100,
+                        def: 100,
+                        spd: 100,
+                        wek: []
+                    },
+                    skill: []
+                },
+            ],
+            hostile: [
+                {
+                    aviliable: true,
+                    friendly: false,
+                    name: "dummy-thu",
+                    roundEnd: false,
+                    status: {
+                        hp: 4294967296,
+                        atk: 1,
+                        def: 0,
+                        spd: 1,
+                        wek: ["thu"]
+                    },
+                    skill: []
+                },
+                {
+                    aviliable: true,
+                    friendly: false,
+                    name: "dummy-wnd",
+                    roundEnd: false,
+                    status: {
+                        hp: 4294967296,
+                        atk: 1,
+                        def: 0,
+                        spd: 1,
+                        wek: ["wnd"]
+                    },
+                    skill: []
+                },
+                {
+                    aviliable: true,
+                    friendly: false,
+                    name: "dummy-ice",
+                    roundEnd: false,
+                    status: {
+                        hp: 4294967296,
+                        atk: 1,
+                        def: 0,
+                        spd: 1,
+                        wek: ["ice"]
+                    },
+                    skill: []
+                }
+            ],
+            params: {
+                skillPoints: 0
+            }
+        };
+    </script>
+    <script>
+        var sim = new Sim(statement);
+    </script>
+</body>
+</html>
