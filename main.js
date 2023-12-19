@@ -9,14 +9,14 @@ class Sim {
     // 计算任务控制器
     start(statement) {
         this.execRound(statement, 1);
-        console.log("Simulation ended");
+        console.log("Phase: Simulation ended");
     }
 
     // 回合触发器
     execRound(statement, round) {
         if (round == 2 + 1) return console.log("Maximum round reached");
 
-        console.log("Round: " + round);
+        console.group("Round: " + round);
 
         // 根据速度排列时间轴
         var timeline = statement.friendly.concat(statement.hostile);
@@ -65,6 +65,7 @@ class Sim {
             }
             // console.log(timeline);
         });
+        console.groupEnd();
         this.execRound(statement, round + 1);
     }
 
