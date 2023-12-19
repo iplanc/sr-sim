@@ -9,12 +9,12 @@ class Sim {
     // 计算任务控制器
     start(statement) {
         this.execRound(statement, 1);
-        console.log("Simulation ended")
+        console.log("Simulation ended");
     }
 
     // 回合触发器
     execRound(statement, round) {
-        if (round == 1 + 1) return console.log("Maximum round reached");
+        if (round == 2 + 1) return console.log("Maximum round reached");
 
         console.log("Round: " + round);
 
@@ -32,20 +32,33 @@ class Sim {
                 function(obj) {
                     return obj.friendly == !character.friendly
                 }
-            );
-            var hostiles = hostiles.sort(
-                function(a,b) {
+            ).sort(
+                function(a, b) {
                     return b.status.wek.includes(character.nature) - a.status.wek.includes(character.nature)
                 }
             );
             if (character.friendly == true) {
-                hostiles[0] = this.attack(character, hostiles[0]);
+                // 友方攻击
+                if (statement.params.skillPoints > 0) {
+                    // 如果技能无施放条件
+                    if (character.skill() == -1) {
+                        // 普攻
+                        hostiles[0] = this.attack(character, hostiles[0]);
+                        statement.params.skillPoints = Math.min(statement.params.skillPoints + 1, 5);
+                    }
+                }
+                else {
+                    // 普攻
+                    hostiles[0] = this.attack(character, hostiles[0]);
+                    statement.params.skillPoints = Math.min(statement.params.skillPoints + 1, 5);
+                }
             }
             else {
+                // 敌方攻击
                 var randomNum = Math.floor(Math.random() * 4);
                 hostiles[randomNum] = this.attack(character, hostiles[randomNum]);
             }
-            console.log(timeline);
+            // console.log(timeline);
         });
         this.execRound(statement, round + 1);
     }

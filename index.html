@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>星穹铁道战斗模拟器</title>
     <meta charset="UTF-8">
@@ -11,64 +12,127 @@
         var statement = {
             friendly: [
                 {
+                    index: 0,
                     aviliable: true,
                     friendly: true,
                     name: "卡夫卡",
                     nature: "thu",
                     roundEnd: false,
                     status: {
-                        hp: 100,
+                        currentHP: 3100,
+                        maxHP: 3100,
                         atk: 100,
                         def: 100,
                         spd: 120,
-                        wek: []
+                        wek: [],
+                        currentMP: 0,
+                        maxMP: 100
                     },
-                    skill: []
+                    buffs: [],
+                    skill: function () {
+                        return -1;
+                    }
                 },
                 {
+                    index: 1,
                     aviliable: true,
                     friendly: true,
                     name: "银狼",
                     nature: "qua",
                     roundEnd: false,
                     status: {
-                        hp: 100,
+                        currentHP: 2900,
+                        maxHP: 2900,
                         atk: 100,
                         def: 100,
                         spd: 130,
-                        wek: []
+                        wek: [],
+                        currentMP: 0,
+                        maxMP: 100
                     },
-                    skill: []
+                    buffs: [],
+                    skill: function () {
+                        return -1;
+                    }
                 },
                 {
+                    index: 2,
                     aviliable: true,
                     friendly: true,
                     name: "希露瓦",
                     nature: "thu",
                     roundEnd: false,
                     status: {
-                        hp: 100,
+                        currentHP: 3000,
+                        maxHP: 3000,
                         atk: 100,
                         def: 100,
                         spd: 90,
-                        wek: []
+                        wek: [],
+                        currentMP: 0,
+                        maxMP: 100
                     },
-                    skill: []
+                    buffs: [],
+                    skill: function () {
+                        return -1;
+                    }
                 },
                 {
+                    index: 3,
                     aviliable: true,
                     friendly: true,
                     name: "霍霍",
                     nature: "wnd",
                     roundEnd: false,
                     status: {
-                        hp: 100,
+                        currentHP: 7000,
+                        maxHP: 7000,
                         atk: 100,
                         def: 100,
                         spd: 100,
-                        wek: []
+                        wek: [],
+                        currentMP: 0,
+                        maxMP: 140
                     },
-                    skill: []
+                    buffs: [],
+                    skill: function () {
+                        // 恢复能量
+                        var mpDelta = 30;
+                        this.status.currentMP = Math.min(this.status.currentMP + mpDelta, this.status.maxMP)
+
+                        // 找到血量最低的友方目标
+                        var hasWounded = false;
+                        var wounded = {status:{currentHP:4294967296}};
+                        statement.friendly.forEach((item) => {
+                            if (item.status.currentHP < item.status.maxHP) {
+                                hasWounded = true;
+                                if (item.status.currentHP < wounded.status.currentHP) {
+                                    wounded = item;
+                                }
+                            }
+                        })
+
+                        // 未找到受伤队友直接退出
+                        if (!hasWounded) return -1;
+
+                        console.log("霍霍 施放 凭附•气通天真")
+
+                        // 回复血量
+                        var baseDelta = 1000
+                        wounded.status.currentHP = Math.min(wounded.status.currentHP + baseDelta, wounded.status.maxHP)
+                        if (statement.friendly[wounded.index - 1] != undefined) {
+                            statement.friendly[wounded.index - 1].currentHP =  Math.min(statement.friendly[wounded.index - 1].currentHP + baseDelta * 0.8, statement.friendly[wounded.index - 1].maxHP)
+                        }
+                        if (statement.friendly[wounded.index + 1] != undefined) {
+                            statement.friendly[wounded.index + 1].currentHP =  Math.min(statement.friendly[wounded.index + 1].currentHP + baseDelta * 0.8, statement.friendly[wounded.index + 1].maxHP)
+                        }
+
+                        // 获得禳命
+                        this.buffs.push([1]);
+                        console.log(statement);
+
+                        return statement.params.skillPoints = statement.params.skillPoints - 1;
+                    }
                 },
             ],
             hostile: [
@@ -124,4 +188,5 @@
         var sim = new Sim(statement);
     </script>
 </body>
+
 </html>
