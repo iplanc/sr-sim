@@ -31,6 +31,9 @@
                     buffs: [],
                     skill: function () {
                         return -1;
+                    },
+                    ultimate: function () {
+                        return 0;
                     }
                 },
                 {
@@ -53,6 +56,9 @@
                     buffs: [],
                     skill: function () {
                         return -1;
+                    },
+                    ultimate: function () {
+                        return 0;
                     }
                 },
                 {
@@ -75,6 +81,9 @@
                     buffs: [],
                     skill: function () {
                         return -1;
+                    },
+                    ultimate: function () {
+                        return 0;
                     }
                 },
                 {
@@ -91,7 +100,7 @@
                         def: 100,
                         spd: 100,
                         wek: [],
-                        currentMP: 0,
+                        currentMP: 139,
                         maxMP: 140
                     },
                     buffs: [],
@@ -132,6 +141,34 @@
                         console.log(statement);
 
                         return statement.params.skillPoints = statement.params.skillPoints - 1;
+                    },
+                    ultimate: function () {
+                        // 恢复能量
+                        var mpDelta = -140 + 5;
+                        this.status.currentMP = Math.min(this.status.currentMP + mpDelta, this.status.maxMP);
+
+                        // 回复能量+提高攻击力
+                        statement.friendly.forEach((item) => {
+                            if (item != this) {
+                                // 回复能量
+                                var delta = 50;
+                                item.status.currentMP = Math.min(item.status.currentMP + delta, item.status.maxMP);
+
+                                // 提高攻击力
+                                item.buffs.push(
+                                    {
+                                        positive: true,
+                                        duration: 2,
+                                        name: "攻击力提高",
+                                        buff: function (type, param) {
+                                            if (type == "atk") return param * 0.2
+                                        }
+                                    }
+                                )
+                            }
+                        })
+
+                        return 0;
                     }
                 },
             ],

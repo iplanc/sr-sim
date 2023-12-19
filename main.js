@@ -39,6 +39,10 @@ class Sim {
             );
             if (character.friendly == true) {
                 // 友方攻击
+                if (character.status.currentMP == character.status.maxMP) {
+                    // 施放终结技
+                    character.ultimate();
+                }
                 if (statement.params.skillPoints > 0) {
                     // 如果技能无施放条件
                     if (character.skill() == -1) {
@@ -48,6 +52,7 @@ class Sim {
                     }
                 }
                 else {
+                    // 如果无战技点
                     // 普攻
                     hostiles[0] = this.attack(character, hostiles[0]);
                     statement.params.skillPoints = Math.min(statement.params.skillPoints + 1, 5);
@@ -63,16 +68,18 @@ class Sim {
         this.execRound(statement, round + 1);
     }
 
-    attack(attacker, defender) {
-        var amount = 0;
-        amount = attacker.status.atk;
+    attack(attacker, defender, width = 1) {
+        var amount = attacker.status.atk;
+        if (attacker.buffs != undefined) {
+            // 循环结算攻击力buff加成
+            attacker.buffs.forEach(buff => {
+                amount = amount + buff.buff("atk", attacker.status.atk);
+                buff.duration = buff.duration - 1
+            });
+        }
         defender.status.hp = defender.status.hp - amount;
         this.battleLog(attacker, defender, amount);
         return defender;
-    }
-
-    attackAOE(attacker, width) {
-
     }
 
     battleLog(attacker, defender, amount) {
